@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+  namespace: default # Specify the namespace (default if omitted)
+  labels:
+    app: my-app
+spec:
+  replicas: 3 # Number of desired pod replicas
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: nginx:1.25.1 # Replace with your application image
+        ports:
+        - containerPort: 80
+        env: # Optional: Define environment variables for the container
+        - name: ENVIRONMENT
+          value: production
+        resources: # Optional: Define resource requests and limits
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "1"
+        livenessProbe: # Optional: Add health checks
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10

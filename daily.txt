@@ -1,0 +1,44 @@
+daily
+1) # for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+
+# (Optional) Verify checksum
+curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+
+sudo mv /tmp/eksctl /usr/bin
+
+2) apt update 
+3) apt install unzip -y
+4) curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    
+   unzip awscliv2.zip
+
+   sudo ./aws/install
+
+   aws --version
+5)curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+
+# Make it executable
+chmod +x ./kubectl
+
+# Move kubectl to a directory in your PATH
+sudo mv ./kubectl /usr/bin/
+
+6) kubectl version --client
+
+7)  wget https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.6.27/aws-iam-authenticator_0.6.27_linux_amd64
+ 
+mv aws-iam-authenticator_0.6.27_linux_amd64 aws-iam-authenticator
+
+chmod +x ./aws-iam-authenticator
+
+sudo mv ./aws-iam-authenticator /usr/bin
+
+aws-iam-authenticator help
+  
